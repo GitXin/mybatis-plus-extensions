@@ -8,6 +8,17 @@ import java.util.Collection;
 
 public class CustomWrapper<T> extends QueryWrapper<T> {
 
+    private String tablePostfix;
+
+    public CustomWrapper() {
+
+    }
+
+    public CustomWrapper(String tablePostfix) {
+        super();
+        this.tablePostfix = tablePostfix;
+    }
+
     @SuppressWarnings("unchecked")
     public CustomWrapper<T> eqWithHandler(String column, Object value, AbstractTypeHandler handler) {
         return (CustomWrapper<T>) addCondition(true, column, SqlKeyword.EQ, handler.dump(value));

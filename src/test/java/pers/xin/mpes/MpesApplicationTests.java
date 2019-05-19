@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import pers.xin.mpes.custom.CustomWrapper;
+import pers.xin.mpes.dao.OperationLogDao;
 import pers.xin.mpes.dao.UserDao;
+import pers.xin.mpes.entity.OperationLog;
 import pers.xin.mpes.entity.User;
 import pers.xin.mpes.handler.EncryptTypeHandler;
 
@@ -23,6 +25,9 @@ public class MpesApplicationTests {
 
     @Autowired
     UserDao userDao;
+
+    @Autowired
+    OperationLogDao operationLogDao;
 
     @Value("${mpes.des-key}")
     String desKey;
@@ -79,6 +84,17 @@ public class MpesApplicationTests {
 
         user = userDao.pessimisticLockById(user.getId());
         Assert.assertEquals(user.getName(), "PessimisticLockById");
+    }
+
+    @Test
+    public void testMonthlyTableNameHandler() {
+        operationLogDao.save(new OperationLog()
+                .setUserId(1L)
+                .setOperationType("LOGIN")
+                .setIp("localhost"));
+
+        OperationLog operationLog = operationLogDao.getOne(new CustomWrapper<OperationLog>("201905").eq("operation_type", "LOGIN").last("limit 1"));
+        Assert.assertEquals(operationLog.getOperationType(), "LOGIN");
     }
 
 }
