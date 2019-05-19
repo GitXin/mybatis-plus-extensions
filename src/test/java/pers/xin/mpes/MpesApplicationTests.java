@@ -35,14 +35,14 @@ public class MpesApplicationTests {
                 .setCreatedAt(new Date())
                 .setUpdatedAt(new Date()));
 
-        User user = userDao.getOne(new QueryWrapper<User>().eq("name", "mpes").last("limit 1"));
+        User user = userDao.findOne(new QueryWrapper<User>().eq("name", "mpes"));
         System.out.println(user);
     }
 
     @Test
     public void testTimestampHandler() {
         userDao.save(new User().setName("TimestampHandler"));
-        User user = userDao.getOne(new QueryWrapper<User>().eq("name", "TimestampHandler").last("limit 1"));
+        User user = userDao.findOne(new QueryWrapper<User>().eq("name", "TimestampHandler"));
         Assert.assertNotNull(user.getCreatedAt());
         Assert.assertNotNull(user.getUpdatedAt());
     }
@@ -55,7 +55,7 @@ public class MpesApplicationTests {
                 .setName("MapTypeHandler")
                 .setExtra(extra));
 
-        User user = userDao.getOne(new QueryWrapper<User>().eq("name", "MapTypeHandler").last("limit 1"));
+        User user = userDao.findOne(new QueryWrapper<User>().eq("name", "MapTypeHandler"));
         Assert.assertEquals(user.getExtra().get("key"), "value");
     }
 
@@ -65,10 +65,10 @@ public class MpesApplicationTests {
                 .setName("EncryptTypeHandler")
                 .setIdcard("411111111111111111"));
 
-        User user = userDao.getOne(new QueryWrapper<User>().eq("name", "EncryptTypeHandler").last("limit 1"));
+        User user = userDao.findOne(new QueryWrapper<User>().eq("name", "EncryptTypeHandler"));
         Assert.assertEquals(user.getIdcard(), "411111111111111111");
 
-        user = userDao.getOne(new CustomWrapper<User>().eqWithHandler("idcard", "411111111111111111", new EncryptTypeHandler()).last("limit 1"));
+        user = userDao.findOne(new CustomWrapper<User>().eqWithHandler("idcard", "411111111111111111", new EncryptTypeHandler()));
         Assert.assertEquals(user.getIdcard(), "411111111111111111");
     }
 
