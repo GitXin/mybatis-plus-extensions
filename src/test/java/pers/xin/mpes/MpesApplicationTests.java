@@ -1,6 +1,5 @@
 package pers.xin.mpes;
 
-import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.junit.Assert;
 import org.junit.Test;
@@ -29,13 +28,10 @@ public class MpesApplicationTests {
 
     @Test
     public void testMyBatisPlus() throws Exception {
-        Map<String, Object> extraMap = new HashMap<>();
-        extraMap.put("key", "value");
         userDao.save(new User()
                 .setName("mpes")
                 .setGender("man")
                 .setIdcard(DesUtils.encrypt("411111111111111111", desKey))
-                .setExtra(JSON.toJSONString(extraMap))
                 .setCreatedAt(new Date())
                 .setUpdatedAt(new Date()));
 
@@ -43,8 +39,6 @@ public class MpesApplicationTests {
         System.out.println(user);
         user.setIdcard(DesUtils.decrypt(user.getIdcard(), desKey));
         System.out.println(user);
-        extraMap = JSON.parseObject(user.getExtra());
-        System.out.println(extraMap.get("key"));
     }
 
     @Test
@@ -53,6 +47,18 @@ public class MpesApplicationTests {
         User user = userDao.getOne(new QueryWrapper<User>().eq("name", "TimestampHandler").last("limit 1"));
         Assert.assertNotNull(user.getCreatedAt());
         Assert.assertNotNull(user.getUpdatedAt());
+    }
+
+    @Test
+    public void testMapTypeHandler() {
+        Map<String, Object> extra = new HashMap<>();
+        extra.put("key", "value");
+        userDao.save(new User()
+                .setName("MapTypeHandler")
+                .setExtra(extra));
+
+        User user = userDao.getOne(new QueryWrapper<User>().eq("name", "MapTypeHandler").last("limit 1"));
+        Assert.assertEquals(user.getExtra().get("key"), "value");
     }
 
 }
