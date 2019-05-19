@@ -2,6 +2,7 @@ package pers.xin.mpes;
 
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,14 @@ public class MpesApplicationTests {
         System.out.println(user);
         extraMap = JSON.parseObject(user.getExtra());
         System.out.println(extraMap.get("key"));
+    }
+
+    @Test
+    public void testTimestampHandler() {
+        userDao.save(new User().setName("TimestampHandler"));
+        User user = userDao.getOne(new QueryWrapper<User>().eq("name", "TimestampHandler").last("limit 1"));
+        Assert.assertNotNull(user.getCreatedAt());
+        Assert.assertNotNull(user.getUpdatedAt());
     }
 
 }
