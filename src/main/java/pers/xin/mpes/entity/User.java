@@ -16,7 +16,8 @@ public class User {
     private Long id;
     private String name;
     private String gender;
-    private String idcard; // encrypted storage
+    @TableField(el = "idcard, typeHandler=pers.xin.mpes.handler.EncryptTypeHandler")
+    private String idcard;
     @TableField(el = "extra, typeHandler=pers.xin.mpes.handler.MapTypeHandler")
     private Map<String, Object> extra;
     @TableField(fill = FieldFill.INSERT)

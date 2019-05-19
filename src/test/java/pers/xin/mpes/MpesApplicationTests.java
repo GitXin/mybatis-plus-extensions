@@ -10,7 +10,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import pers.xin.mpes.dao.UserDao;
 import pers.xin.mpes.entity.User;
-import pers.xin.mpes.utils.DesUtils;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -27,17 +26,14 @@ public class MpesApplicationTests {
     String desKey;
 
     @Test
-    public void testMyBatisPlus() throws Exception {
+    public void testMyBatisPlus() {
         userDao.save(new User()
                 .setName("mpes")
                 .setGender("man")
-                .setIdcard(DesUtils.encrypt("411111111111111111", desKey))
                 .setCreatedAt(new Date())
                 .setUpdatedAt(new Date()));
 
         User user = userDao.getOne(new QueryWrapper<User>().eq("name", "mpes").last("limit 1"));
-        System.out.println(user);
-        user.setIdcard(DesUtils.decrypt(user.getIdcard(), desKey));
         System.out.println(user);
     }
 
@@ -59,6 +55,16 @@ public class MpesApplicationTests {
 
         User user = userDao.getOne(new QueryWrapper<User>().eq("name", "MapTypeHandler").last("limit 1"));
         Assert.assertEquals(user.getExtra().get("key"), "value");
+    }
+
+    @Test
+    public void testEncryptTypeHandler() {
+        userDao.save(new User()
+                .setName("EncryptTypeHandler")
+                .setIdcard("411111111111111111"));
+
+        User user = userDao.getOne(new QueryWrapper<User>().eq("name", "EncryptTypeHandler").last("limit 1"));
+        Assert.assertEquals(user.getIdcard(), "411111111111111111");
     }
 
 }

@@ -3,6 +3,7 @@
 
 <mapper namespace="pers.xin.mpes.dao.mapper.UserMapper">
     <resultMap id="userResultMap" type="pers.xin.mpes.entity.User">
+        <result column="idcard" property="idcard" typeHandler="pers.xin.mpes.handler.EncryptTypeHandler"/>
         <result column="extra" property="extra" typeHandler="pers.xin.mpes.handler.MapTypeHandler"/>
     </resultMap>
 </mapper>
