@@ -8,8 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import pers.xin.mpes.custom.CustomWrapper;
 import pers.xin.mpes.dao.UserDao;
 import pers.xin.mpes.entity.User;
+import pers.xin.mpes.handler.EncryptTypeHandler;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -64,6 +66,9 @@ public class MpesApplicationTests {
                 .setIdcard("411111111111111111"));
 
         User user = userDao.getOne(new QueryWrapper<User>().eq("name", "EncryptTypeHandler").last("limit 1"));
+        Assert.assertEquals(user.getIdcard(), "411111111111111111");
+
+        user = userDao.getOne(new CustomWrapper<User>().eqWithHandler("idcard", "411111111111111111", new EncryptTypeHandler()).last("limit 1"));
         Assert.assertEquals(user.getIdcard(), "411111111111111111");
     }
 
