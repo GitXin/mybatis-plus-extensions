@@ -72,4 +72,13 @@ public class MpesApplicationTests {
         Assert.assertEquals(user.getIdcard(), "411111111111111111");
     }
 
+    @Test
+    public void testPessimisticLockById() {
+        User user = new User().setName("PessimisticLockById");
+        userDao.save(user);
+
+        user = userDao.pessimisticLockById(user.getId());
+        Assert.assertEquals(user.getName(), "PessimisticLockById");
+    }
+
 }
