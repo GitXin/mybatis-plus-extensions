@@ -4,11 +4,18 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.enums.SqlKeyword;
 import pers.xin.mpes.handler.AbstractTypeHandler;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public class CustomWrapper<T> extends QueryWrapper<T> {
 
     private String tablePostfix;
+
+    @SuppressWarnings("unused")
+    public String getTablePostfix() {
+        return this.tablePostfix;
+    }
 
     public CustomWrapper() {
 
@@ -24,9 +31,13 @@ public class CustomWrapper<T> extends QueryWrapper<T> {
         return (CustomWrapper<T>) addCondition(true, column, SqlKeyword.EQ, handler.dump(value));
     }
 
-    @SuppressWarnings("unchecked unused")
+    @SuppressWarnings("unchecked")
     public CustomWrapper<T> inWithHandler(String column, Collection<?> collection, AbstractTypeHandler handler) {
-        return (CustomWrapper<T>) in(true, column, collection.stream().map(obj -> handler.dump(obj)));
+        List<String> dumpCollection = new ArrayList<>();
+        collection.forEach(element -> {
+            dumpCollection.add(handler.dump(element));
+        });
+        return (CustomWrapper<T>) in(true, column, dumpCollection);
     }
 
 }

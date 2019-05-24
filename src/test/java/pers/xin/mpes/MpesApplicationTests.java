@@ -5,7 +5,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import pers.xin.mpes.custom.CustomWrapper;
@@ -15,9 +14,7 @@ import pers.xin.mpes.entity.OperationLog;
 import pers.xin.mpes.entity.User;
 import pers.xin.mpes.handler.EncryptTypeHandler;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -28,9 +25,6 @@ public class MpesApplicationTests {
 
     @Autowired
     OperationLogDao operationLogDao;
-
-    @Value("${mpes.des-key}")
-    String desKey;
 
     @Test
     public void testMyBatisPlus() {
@@ -75,6 +69,9 @@ public class MpesApplicationTests {
 
         user = userDao.findOne(new CustomWrapper<User>().eqWithHandler("idcard", "411111111111111111", new EncryptTypeHandler()));
         Assert.assertEquals(user.getIdcard(), "411111111111111111");
+
+        List<User> users = userDao.list(new CustomWrapper<User>().inWithHandler("idcard", Collections.singletonList("411111111111111111"), new EncryptTypeHandler()));
+        Assert.assertNotEquals(users.size(), 0);
     }
 
     @Test

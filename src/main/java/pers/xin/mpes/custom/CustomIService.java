@@ -9,6 +9,7 @@ public interface CustomIService<T> extends IService<T> {
 
     T findOne(QueryWrapper<T> queryWrapper);
 
+    @SuppressWarnings("unused")
     boolean exists(QueryWrapper<T> queryWrapper);
 
 }
