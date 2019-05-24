@@ -12,6 +12,7 @@ import pers.xin.mpes.dao.OperationLogDao;
 import pers.xin.mpes.dao.UserDao;
 import pers.xin.mpes.entity.OperationLog;
 import pers.xin.mpes.entity.User;
+import pers.xin.mpes.enums.OperationTypeEnum;
 import pers.xin.mpes.handler.EncryptTypeHandler;
 
 import java.util.*;
@@ -87,11 +88,11 @@ public class MpesApplicationTests {
     public void testMonthlyTableNameHandler() {
         operationLogDao.save(new OperationLog()
                 .setUserId(1L)
-                .setOperationType("LOGIN")
+                .setOperationType(OperationTypeEnum.LOGIN)
                 .setIp("localhost"));
 
-        OperationLog operationLog = operationLogDao.getOne(new CustomWrapper<OperationLog>("201905").eq("operation_type", "LOGIN").last("limit 1"));
-        Assert.assertEquals(operationLog.getOperationType(), "LOGIN");
+        OperationLog operationLog = operationLogDao.getOne(new CustomWrapper<OperationLog>("201905").eq("operation_type", OperationTypeEnum.LOGIN).last("limit 1"));
+        Assert.assertEquals(operationLog.getOperationType(), OperationTypeEnum.LOGIN);
     }
 
 }

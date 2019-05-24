@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 import lombok.experimental.Accessors;
+import pers.xin.mpes.enums.OperationTypeEnum;
 
 import java.util.Date;
 
@@ -16,7 +17,7 @@ public class OperationLog {
     @TableId(type = IdType.AUTO)
     private Long id;
     private Long userId;
-    private String operationType;
+    private OperationTypeEnum operationType;
     private String ip;
     @TableField(fill = FieldFill.INSERT)
     private Date createdAt;
