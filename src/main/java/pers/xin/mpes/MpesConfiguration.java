@@ -1,11 +1,11 @@
 package pers.xin.mpes;
 
 import com.baomidou.mybatisplus.core.parser.ISqlParser;
-import com.baomidou.mybatisplus.extension.parsers.DynamicTableNameParser;
 import com.baomidou.mybatisplus.extension.parsers.ITableNameHandler;
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import pers.xin.mpes.custom.CustomDynamicTableNameParser;
 import pers.xin.mpes.handler.MonthlyTableNameHandler;
 
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ public class MpesConfiguration {
 
     @Bean
     public PaginationInterceptor paginationInterceptor() {
-        DynamicTableNameParser dynamicTableNameParser = new DynamicTableNameParser();
+        CustomDynamicTableNameParser dynamicTableNameParser = new CustomDynamicTableNameParser();
         Map<String, ITableNameHandler> tableNameHandlerMap = new HashMap<>();
         tableNameHandlerMap.put("operation_log", new MonthlyTableNameHandler());
         dynamicTableNameParser.setTableNameHandlerMap(tableNameHandlerMap);
